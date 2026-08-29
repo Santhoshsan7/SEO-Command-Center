@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI SEO Command Center — shipcube.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14; --surf:#0F1524; --surf2:#151D30; --surf3:#1B2438;
+  --line:#212C45; --line2:#2C3A57;
+  --tx:#E9EFFA; --tx2:#94A6C4; --tx3:#63748F;
+  --cy:#22D3EE; --bl:#5B9DFF; --gr:#34D399; --ye:#FACC15;
+  --or:#FB923C; --rd:#F87171; --pu:#A78BFA;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif;
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.m{font-family:'JetBrains Mono',ui-monospace,monospace}
+.wrap{max-width:1560px;margin:0 auto;padding:0 22px 90px}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px;border-radius:4px}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+
+header{position:sticky;top:0;z-index:60;background:rgba(7,11,20,.94);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hd{max-width:1560px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+  background:linear-gradient(140deg,var(--cy),#3B82F6);color:#04121C;font-weight:700;font-size:17px}
+.hname{font-size:16px;font-weight:700;letter-spacing:-.3px;line-height:1.2}
+.hsub{font-size:11.5px;color:var(--tx3);margin-top:2px}
+.hr{margin-left:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.chipx{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--tx2);
+  background:var(--surf);border:1px solid var(--line);border-radius:9px;padding:7px 12px}
+.chipx b{color:var(--tx);font-weight:500}
+.stat{width:7px;height:7px;border-radius:50%;flex:none}
+.iconbtn{background:var(--surf);border:1px solid var(--line);border-radius:9px;
+  width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--tx2);transition:.14s}
+.iconbtn:hover{border-color:var(--line2);color:var(--tx)}
+.iconbtn svg{width:15px;height:15px}
+.spin{animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.shell{display:flex;align-items:flex-start;max-width:1560px;margin:0 auto;gap:0}
+.nav{position:sticky;top:64px;width:212px;flex:none;padding:22px 12px 40px;
+  border-right:1px solid var(--line);height:calc(100vh - 64px);overflow-y:auto}
+.navg{margin-bottom:20px}
+.navg .t{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tx3);padding:0 10px 8px}
+.navi{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;
+  color:var(--tx2);padding:8px 10px;border-radius:8px;font-size:13px;cursor:pointer;
+  text-align:left;transition:.12s;margin-bottom:2px}
+.navi:hover{background:var(--surf);color:var(--tx)}
+.navi[aria-current=page]{background:rgba(34,211,238,.1);color:var(--cy);font-weight:500}
+.navi .dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.5;flex:none}
+.navi .cnt{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--tx3);background:var(--surf2);padding:1px 6px;border-radius:5px}
+.wrap{flex:1;min-width:0;max-width:none;padding:0 22px 90px}
+.sec{margin-top:26px}
+.sec[data-view]{display:none}
+.sec[data-view].show{display:block;animation:fin .22s ease}
+@keyframes fin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.vh{display:flex;align-items:baseline;gap:12px;margin:26px 0 16px;flex-wrap:wrap}
+.vh h1{font-size:21px;font-weight:700;margin:0;letter-spacing:-.4px}
+.vh p{margin:0;font-size:12.5px;color:var(--tx3)}
+.vh .sp{margin-left:auto;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.navtoggle{display:none}
+@media(max-width:960px){
+  .nav{position:fixed;left:0;top:64px;bottom:0;z-index:70;background:var(--bg);
+    transform:translateX(-100%);transition:transform .2s;height:auto}
+  .nav.open{transform:none}
+  .navtoggle{display:grid}
+}
+.sech{display:flex;align-items:baseline;gap:12px;margin-bottom:13px;flex-wrap:wrap}
+.sech h2{font-size:15.5px;font-weight:600;margin:0;letter-spacing:-.2px}
+.sech p{margin:0;font-size:12px;color:var(--tx3)}
+.sech .sp{margin-left:auto;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+
+.g{display:grid;grid-template-columns:repeat(12,1fr);gap:13px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:17px;position:relative}
+.card.pad0{padding:0}
+.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}
+.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}
+.c8{grid-column:span 8}.c9{grid-column:span 9}.c12{grid-column:span 12}
+.ch{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.ch h3{font-size:13px;font-weight:600;margin:0;letter-spacing:-.1px}
+.ch .rt{margin-left:auto;display:flex;gap:6px;align-items:center}
+
+.src{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;
+  padding:3px 6px;border-radius:4px;text-transform:uppercase;font-weight:500;white-space:nowrap}
+.s-real{background:rgba(52,211,153,.13);color:var(--gr)}
+.s-calc{background:rgba(91,157,255,.13);color:var(--bl)}
+.s-ai{background:rgba(167,139,250,.15);color:var(--pu)}
+
+.kl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--tx3)}
+.kv{font-size:30px;font-weight:700;letter-spacing:-1.2px;line-height:1;margin:9px 0 6px}
+.kd{font-size:11.5px;color:var(--tx3);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.up{color:var(--gr);font-weight:600}.dn{color:var(--rd);font-weight:600}.fl{color:var(--tx3)}
+
+.btn{background:var(--surf2);border:1px solid var(--line);color:var(--tx2);
+  border-radius:8px;padding:6px 12px;font-size:11.5px;cursor:pointer;transition:.13s;white-space:nowrap}
+.btn:hover{border-color:var(--line2);color:var(--tx)}
+.btn.sm{padding:4px 9px;font-size:10.5px}
+.btn.pri{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.35);color:var(--cy)}
+.btn.pri:hover{background:rgba(34,211,238,.2)}
+.seg{display:flex;background:var(--surf2);border:1px solid var(--line);border-radius:9px;padding:2px;gap:2px}
+.seg button{background:none;border:0;color:var(--tx3);padding:5px 11px;border-radius:7px;
+  font-size:11.5px;cursor:pointer;transition:.13s;font-family:'JetBrains Mono',monospace}
+.seg button:hover{color:var(--tx)}
+.seg button[aria-pressed=true]{background:var(--surf3);color:var(--cy);font-weight:600}
+.inp{background:var(--surf2);border:1px solid var(--line);border-radius:8px;color:var(--tx);
+  padding:7px 11px;font-size:12px;font-family:inherit;min-width:190px}
+.inp::placeholder{color:var(--tx3)}
+.inp:focus{border-color:var(--line2);outline:none}
+
+.tw{overflow-x:auto;margin:0 -17px;padding:0 17px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
+thead th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--tx3);font-weight:400;text-align:right;
+  padding:0 10px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th:first-child{text-align:left;padding-left:0}
+tbody td{padding:10px 10px 10px 0;border-bottom:1px solid var(--line);text-align:right;
+  font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap}
+tbody td:first-child{text-align:left;padding-left:0;font-family:Inter,sans-serif;font-size:13px;
+  max-width:330px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.clk{cursor:pointer}
+tbody tr.clk:hover td{background:rgba(34,211,238,.045)}
+
+.tag{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.06em;padding:2.5px 6px;
+  border-radius:4px;margin-left:7px;text-transform:uppercase;vertical-align:1.5px;font-weight:500}
+.t-op{background:rgba(52,211,153,.15);color:var(--gr)}
+.t-ctr{background:rgba(251,146,60,.15);color:var(--or)}
+.t-top{background:rgba(34,211,238,.15);color:var(--cy)}
+
+.blist{display:flex;flex-direction:column;gap:12px}
+.brow .bt{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.brow .bt b{font-family:'JetBrains Mono',monospace;font-weight:500;color:var(--cy)}
+.btrack{height:6px;background:var(--surf3);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+.irow{background:var(--surf);border:1px solid var(--line);border-radius:11px;margin-bottom:8px;transition:.13s}
+.irow:hover{border-color:var(--line2)}
+.irow.done{opacity:.44}
+.ih{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:center;padding:13px 15px;cursor:pointer}
+.pri{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;padding:4px 0;
+  border-radius:5px;text-align:center;color:#04121C}
+.it{font-weight:600;font-size:13.5px;letter-spacing:-.1px}
+.im{margin-top:4px;font-size:11.5px;color:var(--tx3);display:flex;gap:11px;flex-wrap:wrap;align-items:center}
+.im .cat{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase}
+.ir{display:flex;align-items:center;gap:12px}
+.ice{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.icec{display:flex;gap:2px}
+.cel{width:5px;height:13px;border-radius:1px;background:var(--surf3)}
+.cel.on{background:var(--cy)}
+.icel{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--tx3)}
+.stbtn{font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:5px 9px;border-radius:6px;
+  border:1px solid var(--line);background:var(--surf2);color:var(--tx3);cursor:pointer;white-space:nowrap}
+.stbtn.prog{color:var(--ye);border-color:#4A3F13}
+.stbtn.done{color:var(--gr);border-color:#164634}
+.stbtn.ign{color:var(--tx3);text-decoration:line-through}
+
+.ba{display:grid;grid-template-columns:1fr 30px 1fr;gap:11px;align-items:stretch}
+.bax{background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:12.5px;line-height:1.55}
+.bax.now{border-left:2px solid var(--rd)}
+.bax.next{border-left:2px solid var(--gr)}
+.bal{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:6px}
+.arw{display:grid;place-items:center;color:var(--tx3);font-size:17px}
+
+.ov{position:fixed;inset:0;background:rgba(4,7,14,.72);backdrop-filter:blur(3px);
+  z-index:90;opacity:0;pointer-events:none;transition:.2s}
+.ov.on{opacity:1;pointer-events:auto}
+.dr{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);background:var(--surf);
+  border-left:1px solid var(--line);z-index:100;transform:translateX(100%);
+  transition:transform .26s cubic-bezier(.2,.8,.2,1);overflow-y:auto}
+.dr.on{transform:translateX(0)}
+.drh{position:sticky;top:0;background:var(--surf);border-bottom:1px solid var(--line);
+  padding:18px 22px;display:flex;align-items:flex-start;gap:14px;z-index:2}
+.drb{padding:20px 22px 60px}
+.blk{margin-bottom:20px}
+.blk .h{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--tx3);margin-bottom:7px;display:flex;align-items:center;gap:8px}
+.blk p{margin:0;font-size:13.5px;color:#C4D2EA;line-height:1.65}
+.ev{border-left:2px solid var(--cy);padding-left:13px}
+.urls{display:flex;flex-wrap:wrap;gap:5px}
+.u{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surf2);
+  border:1px solid var(--line);padding:4px 8px;border-radius:5px;color:#A9BEDF}
+.mini{display:grid;gap:9px}
+.minic{background:var(--surf2);border:1px solid var(--line);border-radius:9px;padding:11px}
+.minic .l{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--tx3)}
+.minic .v{font-size:18px;font-weight:700;margin-top:5px;letter-spacing:-.5px}
+
+.empty{padding:22px 4px;color:var(--tx3);font-size:12.5px;line-height:1.7}
+.empty b{color:var(--tx2);display:block;margin-bottom:6px;font-size:13px}
+.empty code{font-family:'JetBrains Mono',monospace;background:var(--surf2);padding:2px 6px;
+  border-radius:4px;color:#A9BEDF;font-size:11px}
+.empty .req{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px}
+
+.tip{position:relative;display:inline-flex;align-items:center}
+.tip .q{width:14px;height:14px;border-radius:50%;border:1px solid var(--line2);
+  color:var(--tx3);font-size:9px;display:grid;place-items:center;cursor:help;font-family:'JetBrains Mono',monospace}
+.tip .tt{position:absolute;bottom:calc(100% + 8px);right:-8px;
+  background:var(--surf3);border:1px solid var(--line2);border-radius:9px;padding:10px 13px;
+  font-size:11.5px;line-height:1.6;color:var(--tx2);width:262px;opacity:0;pointer-events:none;
+  transition:.15s;z-index:30;font-family:Inter,sans-serif;text-transform:none;letter-spacing:0;text-align:left}
+.tip:hover .tt,.tip:focus-within .tt{opacity:1}
+
+footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);
+  display:flex;gap:26px;flex-wrap:wrap;font-size:11.5px;color:var(--tx3);line-height:1.8}
+footer b{color:var(--tx2);display:block;margin-bottom:4px}
+.leg{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+
+@media(max-width:1240px){
+  .c2,.c3{grid-column:span 4}.c4,.c5{grid-column:span 6}
+  .c7,.c8,.c9{grid-column:span 12}
+}
+@media(max-width:820px){
+  .c2,.c3,.c4,.c5,.c6{grid-column:span 12}
+  .ba{grid-template-columns:1fr}.arw{transform:rotate(90deg)}
+  .ih{grid-template-columns:38px 1fr}
+  .ir2{grid-column:1/-1;justify-content:space-between;padding-left:52px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="logo">S</div>
+    <div>
+      <div class="hname">AI SEO Command Center</div>
+      <div class="hsub m">shipcube.com</div>
+    </div>
+    <div class="hr">
+      <div class="chipx"><span class="stat" id="stDot" style="background:var(--tx3)"></span>
+        <span id="stTxt">Loading</span></div>
+      <div class="chipx">Last audit <b class="m" id="lastRun">—</b></div>
+      <div class="chipx">Next <b class="m">Mon 06:00 IST</b></div>
+      <button class="iconbtn navtoggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <button class="iconbtn" id="refresh" title="Refresh data" aria-label="Refresh data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+<aside class="nav" id="nav">
+  <div class="navg"><div class="t">Overview</div>
+    <button class="navi" data-go="overview" aria-current="page"><span class="dot"></span>Dashboard</button>
+    <button class="navi" data-go="performance"><span class="dot"></span>Search performance</button>
+  </div>
+  <div class="navg"><div class="t">Intelligence</div>
+    <button class="navi" data-go="keywords"><span class="dot"></span>Keywords<span class="cnt" id="nKw">—</span></button>
+    <button class="navi" data-go="pages"><span class="dot"></span>Countries &amp; pages</button>
+    <button class="navi" data-go="vitals"><span class="dot"></span>Core Web Vitals</button>
+  </div>
+  <div class="navg"><div class="t">Action</div>
+    <button class="navi" data-go="actions"><span class="dot"></span>AI actions<span class="cnt" id="nAct">—</span></button>
+    <button class="navi" data-go="metadata"><span class="dot"></span>Metadata optimizer</button>
+    <button class="navi" data-go="scores"><span class="dot"></span>Category scores</button>
+    <button class="navi" data-go="issues"><span class="dot"></span>All issues<span class="cnt" id="nIss">—</span></button>
+  </div>
+</aside>
+
+<div class="wrap">
+
+  <div class="sec show" data-view="overview">
+    <div class="vh"><h1>Dashboard</h1><p>Where the site stands right now</p>
+      <div class="sp"><div class="seg" id="rangeA">
+        <button data-d="1" aria-pressed="false">24h</button>
+        <button data-d="7" aria-pressed="false">7d</button>
+        <button data-d="28" aria-pressed="true">28d</button>
+        <button data-d="90" aria-pressed="false">3m</button>
+        <button data-d="180" aria-pressed="false">6m</button>
+        <button data-d="365" aria-pressed="false">1y</button>
+      </div></div></div>
+    <div class="g">
+      <div class="card c3">
+        <div class="ch"><h3>SEO Health</h3>
+          <div class="rt">
+            <span class="tip"><span class="q" tabindex="0">?</span>
+              <span class="tt">Calculated deterministically: every category starts at 100 and loses
+              points for each open issue, weighted by priority. Categories are then combined using
+              fixed weights. Gemini explains the score — it does not invent it.</span></span>
+            <span class="src s-calc">calc</span>
+          </div></div>
+        <div style="display:grid;place-items:center;padding:2px 0 4px">
+          <svg id="gauge" viewBox="0 0 168 168" width="168" height="168" role="img" aria-label="SEO health score"></svg>
+        </div>
+        <div id="gdelta" style="text-align:center;font-size:11.5px;color:var(--tx3);margin-top:8px"></div>
+      </div>
+
+      <div class="card c9 pad0" style="display:flex;flex-direction:column">
+        <div style="padding:17px 17px 0"><div class="ch"><h3>Search performance</h3>
+          <div class="rt"><span class="src s-real">google</span></div></div></div>
+        <div class="g" style="grid-template-columns:repeat(5,1fr);gap:0;flex:1" id="kpiRow"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sech"><h2>Health trend</h2><p>Score across every audit — click a point to see what changed</p>
+      <div class="sp"><div class="seg" id="rangeSeg">
+        <button data-r="8" aria-pressed="true">8 audits</button>
+        <button data-r="30" aria-pressed="false">30d</button>
+        <button data-r="90" aria-pressed="false">90d</button>
+        <button data-r="all" aria-pressed="false">All</button>
+      </div></div></div>
+    <div class="g">
+      <div class="card c8">
+        <svg id="trend" viewBox="0 0 900 236" width="100%" height="236" role="img" aria-label="Health score trend"></svg>
+        <div id="changeBox"></div>
+      </div>
+      <div class="card c4">
+        <div class="ch"><h3>Open issues</h3><div class="rt"><span class="src s-ai">gemini</span></div></div>
+        <div style="display:flex;gap:18px;align-items:center">
+          <svg id="priDonut" viewBox="0 0 156 156" width="156" height="156"></svg>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px" id="priLeg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <div class="sec" data-view="performance">
+    <div class="vh"><h1>Search performance</h1>
+      <p>Clicks and impressions per day, straight from Search Console</p>
+      <div class="sp">
+        <div class="seg" id="rangeB">
+          <button data-d="1" aria-pressed="false">24h</button>
+          <button data-d="7" aria-pressed="false">7d</button>
+          <button data-d="28" aria-pressed="true">28d</button>
+          <button data-d="90" aria-pressed="false">3m</button>
+          <button data-d="180" aria-pressed="false">6m</button>
+          <button data-d="365" aria-pressed="false">1y</button>
+        </div>
+        <div class="seg" id="dMetric">
+          <button data-m="both" aria-pressed="true">Both</button>
+          <button data-m="clicks" aria-pressed="false">Clicks</button>
+          <button data-m="impressions" aria-pressed="false">Impr.</button>
+          <button data-m="ctr_pct" aria-pressed="false">CTR</button>
+          <button data-m="avg_position" aria-pressed="false">Position</button>
+        </div>
+      </div></div>
+    <div class="card"><div id="perfSummary" class="g" style="margin-bottom:6px"></div>
+      <div id="perfBox"></div></div>
+  </div>
+
+  <div class="sec" data-view="keywords">
+    <div class="vh"><h1>Keyword intelligence</h1><p>What people search to find us · fixed 28-day window</p>
+      <div class="sp">
+        <input class="inp" id="kwSearch" type="search" placeholder="Search keywords…" aria-label="Search keywords">
+        <div class="seg" id="kwSeg">
+          <button data-k="all" aria-pressed="true">All</button>
+          <button data-k="opp" aria-pressed="false">Opportunity</button>
+          <button data-k="1-3" aria-pressed="false">1–3</button>
+          <button data-k="4-10" aria-pressed="false">4–10</button>
+          <button data-k="11-20" aria-pressed="false">11–20</button>
+          <button data-k="21" aria-pressed="false">21+</button>
+        </div>
+      </div></div>
+    <div class="g">
+      <div class="card c8"><div id="kwBox"></div></div>
+      <div class="card c4">
+        <div class="ch"><h3>Opportunity engine</h3><div class="rt"><span class="src s-calc">calc</span></div></div>
+        <div id="oppBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" data-view="pages">
+    <div class="vh"><h1>Countries &amp; pages</h1><p>Where demand comes from and what it lands on · fixed 28-day window</p></div>
+    <div class="g">
+      <div class="card c4">
+        <div class="ch"><h3>Countries</h3><div class="rt"><span class="src s-real">google</span></div></div>
+        <div id="mapBox" style="margin:-4px 0 14px"></div>
+        <div id="geoBox"></div>
+      </div>
+      <div class="card c8">
+        <div class="ch"><h3>Top organic landing pages</h3>
+          <div class="rt"><span class="src s-real">google</span></div></div>
+        <div id="lpBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" data-view="scores">
+    <div class="vh"><h1>Category scores</h1>
+      <p>Each category starts at 100 and loses points per open issue, weighted by priority</p>
+      <div class="sp"><span class="src s-calc">calc</span></div></div>
+    <div class="g" id="catScores"></div>
+  </div>
+
+  <div class="sec" data-view="actions">
+    <div class="vh"><h1>AI action center</h1><p>What to fix first — ranked by ICE</p>
+      <div class="sp"><span class="src s-ai">gemini</span></div></div>
+    <div class="g" id="actionBox"></div>
+  </div>
+
+  <div class="sec" data-view="metadata">
+    <div class="vh"><h1>AI metadata optimizer</h1><p>Current tag → recommended tag</p>
+      <div class="sp"><span class="src s-ai">gemini</span></div></div>
+    <div class="card"><div id="metaBox"></div></div>
+  </div>
+
+  <div class="sec" data-view="vitals">
+    <div class="vh"><h1>Core Web Vitals</h1><p>Lab and field data from PageSpeed Insights</p>
+      <div class="sp"><span class="src s-real">pagespeed</span></div></div>
+    <div id="cwvBox"></div>
+  </div>
+
+  <div class="sec" data-view="issues">
+    <div class="vh"><h1>All issues</h1><p>Every finding, filterable</p>
+      <div class="sp">
+        <input class="inp" id="isSearch" type="search" placeholder="Search issues…" aria-label="Search issues">
+        <div class="seg" id="priSeg">
+          <button data-p="all" aria-pressed="true">All</button>
+          <button data-p="P0" aria-pressed="false">P0</button>
+          <button data-p="P1" aria-pressed="false">P1</button>
+          <button data-p="P2" aria-pressed="false">P2</button>
+          <button data-p="P3" aria-pressed="false">P3</button>
+        </div>
+        <div class="seg" id="stSeg">
+          <button data-s="active" aria-pressed="true">Not done</button>
+          <button data-s="all" aria-pressed="false">All</button>
+        </div>
+        <button class="btn" id="exportBtn">Export CSV</button>
+      </div></div>
+    <div id="issueList"></div>
+    <div id="issueCount" class="m" style="font-size:11px;color:var(--tx3);margin-top:12px"></div>
+  </div>
+
+  <footer>
+    <div><b>Data sources</b>
+      Google Search Console · Website crawl · PageSpeed Insights · Gemini · n8n</div>
+    <div><b>Last synchronised</b><span class="m" id="syncTime">—</span></div>
+    <div><b>How to read this</b>
+      <div class="leg" style="margin-top:5px">
+        <span><span class="src s-real">google</span> straight from the API</span>
+        <span><span class="src s-calc">calc</span> computed from real data</span>
+        <span><span class="src s-ai">gemini</span> AI judgement</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dr" id="dr" role="dialog" aria-modal="true" aria-label="Detail">
+  <div class="drh">
+    <div style="flex:1" id="drTitle"></div>
+    <button class="iconbtn" id="drClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+        stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drb" id="drBody"></div>
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+"use strict";
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbylxwDxxSozm7IfjnZHxt5l9tcXypzXJAWbO_KI66-Mlyg1M4W4mvXT9_FQAOa8yxtNuw/exec";
+
+var RECS=[], ITEMS=[], HISTORY=[], METRICS={}, PERF={};
+var F={pri:"all",st:"active",kw:"all",kwq:"",isq:"",range:"8",dr:"28",dm:"both"};
+
+function V(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+var PRICOL={P0:"--rd",P1:"--or",P2:"--bl",P3:"--tx3"};
+var WEIGHTS={technical:.20,"on-page":.20,performance:.15,indexation:.15,
+  content:.15,"internal-linking":.10,"structured-data":.05};
+var PENALTY={P0:34,P1:19,P2:9,P3:4};
+
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function num(n){return (Number(n)||0).toLocaleString("en-US");}
+function fdate(s,long){
+  if(!s) return "—";
+  var d=new Date(s);
+  if(isNaN(d.getTime())) return String(s).slice(0,10);
+  return d.toLocaleDateString("en-GB",long?{day:"numeric",month:"short",year:"numeric"}
+    :{day:"numeric",month:"short"});
+}
+function pol(cx,cy,r,deg){var a=(deg-90)*Math.PI/180;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function arc(cx,cy,r,f,t){
+  var p1=pol(cx,cy,r,t),p2=pol(cx,cy,r,f);
+  return "M "+p1[0]+" "+p1[1]+" A "+r+" "+r+" 0 "+((t-f<=180)?0:1)+" 0 "+p2[0]+" "+p2[1];
+}
+
+/* deterministic scoring */
+function categoryScores(list){
+  var out={};
+  Object.keys(WEIGHTS).forEach(function(c){out[c]=100;});
+  list.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";}).forEach(function(i){
+    var c=(i.category||"").toLowerCase();
+    if(out[c]===undefined) out[c]=100;
+    out[c]=Math.max(0,out[c]-(PENALTY[i.priority]||5));
+  });
+  return out;
+}
+function healthFrom(list){
+  var cs=categoryScores(list),tot=0,ws=0;
+  Object.keys(WEIGHTS).forEach(function(c){
+    if(cs[c]===undefined) return;
+    tot+=cs[c]*WEIGHTS[c]; ws+=WEIGHTS[c];
+  });
+  return ws?Math.round(tot/ws):100;
+}
+function statusOf(s){
+  return s>=75?{t:"Healthy",c:"--gr"}:s>=50?{t:"Warning",c:"--ye"}:{t:"Critical",c:"--rd"};
+}
+
+function countUp(el,to,dec,sfx){
+  dec=dec||0; sfx=sfx||"";
+  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){
+    el.textContent=to.toFixed(dec)+sfx; return;
+  }
+  var t0=performance.now();
+  function step(t){
+    var p=Math.min(1,(t-t0)/620), e=1-Math.pow(1-p,3);
+    el.textContent=(to*e).toFixed(dec)+sfx;
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function emptyState(what,why,how){
+  return '<div class="empty"><b>'+what+' not available yet</b>'+
+    'This panel shows '+why+'. Nothing is shown rather than estimated.'+
+    '<div class="req">Required: '+how+'</div></div>';
+}
+
+/* ── KPI row ── */
+function rangeLabel(){
+  return {1:"last 24 hours",7:"last 7 days",28:"last 28 days",
+    90:"last 3 months",180:"last 6 months",365:"last 12 months"}[F.dr]||"period";
+}
+function drawKpis(){
+  var box=document.getElementById("kpiRow");
+  var d=dailySlice();
+  var open=ITEMS.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";});
+  var pcap=["P0","P1","P2","P3"].map(function(p){
+    var n=open.filter(function(i){return i.priority===p;}).length;
+    return n?'<span style="color:'+V(PRICOL[p])+'">'+p+" "+n+"</span>":"";
+  }).filter(Boolean).join(" · ")||"none open";
+
+  if(!d.length){
+    // fall back to the 28-day keyword snapshot, and say so
+    var q=METRICS.queries||[];
+    if(!q.length){
+      box.innerHTML='<div style="grid-column:1/-1;padding:0 17px 17px">'+
+        emptyState("Search Console metrics","clicks, impressions, CTR and average position",
+        "Add the <code>metrics</code> tab and the metric nodes from n8n-changes.md")+'</div>';
+      return;
+    }
+    var c2=0,i2=0,p2=0;
+    q.forEach(function(x){c2+=x.clicks;i2+=x.impressions;p2+=x.avg_position*x.impressions;});
+    renderKpiCells(box,[
+      {l:"Organic clicks",v:c2,d:0,s:"",cap:"28-day snapshot"},
+      {l:"Impressions",v:i2,d:0,s:"",cap:'<span style="color:'+V("--ye")+'">approximate — see note</span>'},
+      {l:"Average CTR",v:i2?100*c2/i2:0,d:2,s:"%",cap:"approximate"},
+      {l:"Avg position",v:i2?p2/i2:0,d:1,s:"",cap:"impression-weighted"},
+      {l:"Open issues",v:open.length,d:0,s:"",cap:pcap}
+    ]);
+    return;
+  }
+
+  var clicks=0,imps=0,posw=0;
+  d.forEach(function(x){clicks+=x.clicks;imps+=x.impressions;posw+=x.avg_position*x.impressions;});
+  renderKpiCells(box,[
+    {l:"Organic clicks",v:clicks,d:0,s:"",cap:rangeLabel()},
+    {l:"Impressions",v:imps,d:0,s:"",cap:rangeLabel()},
+    {l:"Average CTR",v:imps?100*clicks/imps:0,d:2,s:"%",cap:"clicks ÷ impressions"},
+    {l:"Avg position",v:imps?posw/imps:0,d:1,s:"",cap:"impression-weighted"},
+    {l:"Open issues",v:open.length,d:0,s:"",cap:pcap}
+  ]);
+}
+function renderKpiCells(box,cells){
+  box.innerHTML=cells.map(function(c,i){
+    return '<div style="padding:4px 17px 17px;'+(i?"border-left:1px solid var(--line)":"")+'">'+
+      '<div class="kl">'+c.l+'</div>'+
+      '<div class="kv" data-v="'+c.v+'" data-d="'+c.d+'" data-s="'+c.s+'">0</div>'+
+      '<div class="kd">'+c.cap+'</div></div>';
+  }).join("");
+  Array.prototype.forEach.call(box.querySelectorAll(".kv"),function(el){
+    countUp(el,parseFloat(el.getAttribute("data-v")),
+      parseInt(el.getAttribute("data-d"),10),el.getAttribute("data-s"));
+  });
+}
+
+/* ── gauge ── */
+function drawGauge(score){
+  var svg=document.getElementById("gauge"), st=statusOf(score), col=V(st.c);
+  var p=Math.max(0,Math.min(100,score))/100;
+  svg.innerHTML='<circle cx="84" cy="84" r="63" fill="none" stroke="'+V("--surf3")+'" stroke-width="14"/>'+
+    '<path d="'+arc(84,84,63,0,359.9*p||0.1)+'" fill="none" stroke="'+col+'" stroke-width="14" stroke-linecap="round"/>'+
+    '<text x="84" y="80" text-anchor="middle" fill="'+col+'" font-size="42" font-weight="700" font-family="Inter">'+score+'</text>'+
+    '<text x="84" y="103" text-anchor="middle" fill="'+V("--tx3")+'" font-size="11" font-family="JetBrains Mono">/ 100</text>'+
+    '<text x="84" y="126" text-anchor="middle" fill="'+col+'" font-size="11.5" font-weight="600" font-family="Inter">'+st.t+'</text>';
+  document.getElementById("stDot").style.background=col;
+  document.getElementById("stTxt").textContent=st.t;
+}
+
+/* ── trend ── */
+function trendSlice(){
+  if(F.range==="all") return HISTORY;
+  if(F.range==="8") return HISTORY.slice(-8);
+  var cut=Date.now()-parseInt(F.range,10)*864e5;
+  var f=HISTORY.filter(function(h){return new Date(h.run_date).getTime()>=cut;});
+  return f.length>1?f:HISTORY.slice(-2);
+}
+function drawTrend(){
+  var svg=document.getElementById("trend"), H=trendSlice();
+  if(H.length<2){
+    svg.innerHTML='<text x="450" y="118" text-anchor="middle" fill="'+V("--tx3")+
+      '" font-size="13" font-family="Inter">Only one audit so far — the trend line begins from the second run</text>';
+    return;
+  }
+  var W=900,Ht=236,pl=44,pr=18,pt=20,pb=36;
+  var v=H.map(function(h){return h.score;});
+  var lo=Math.max(0,Math.min.apply(null,v)-12), hi=Math.min(100,Math.max.apply(null,v)+12);
+  function X(i){return pl+i*(W-pl-pr)/(H.length-1);}
+  function Y(s){return pt+(1-(s-lo)/((hi-lo)||1))*(Ht-pt-pb);}
+  var g="";
+  [lo,(lo+hi)/2,hi].forEach(function(s){
+    g+='<line x1="'+pl+'" y1="'+Y(s).toFixed(1)+'" x2="'+(W-pr)+'" y2="'+Y(s).toFixed(1)+'" stroke="'+V("--line")+'"/>';
+    g+='<text x="14" y="'+(Y(s)+4).toFixed(1)+'" fill="'+V("--tx3")+'" font-size="10" font-family="JetBrains Mono">'+Math.round(s)+'</text>';
+  });
+  var pts=v.map(function(s,i){return X(i).toFixed(1)+","+Y(s).toFixed(1);}).join(" ");
+  var dots="",labs="",every=Math.ceil(H.length/6);
+  v.forEach(function(s,i){
+    var last=i===v.length-1;
+    dots+='<circle class="tp" data-i="'+i+'" cx="'+X(i).toFixed(1)+'" cy="'+Y(s).toFixed(1)+
+      '" r="'+(last?6:4.5)+'" fill="'+(last?V("--cy"):V("--bg"))+'" stroke="'+V("--cy")+
+      '" stroke-width="2.2" style="cursor:pointer"/>';
+    if(i%every===0||last)
+      labs+='<text x="'+X(i).toFixed(1)+'" y="'+(Ht-11)+'" fill="'+V("--tx3")+
+        '" font-size="10" font-family="JetBrains Mono" text-anchor="middle">'+fdate(H[i].run_date)+'</text>';
+  });
+  svg.innerHTML='<defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="'+V("--cy")+'" stop-opacity=".22"/>'+
+    '<stop offset="100%" stop-color="'+V("--cy")+'" stop-opacity="0"/></linearGradient></defs>'+g+
+    '<polygon points="'+pl+","+(Ht-pb)+" "+pts+" "+(W-pr)+","+(Ht-pb)+'" fill="url(#tg)"/>'+
+    '<polyline points="'+pts+'" fill="none" stroke="'+V("--cy")+
+    '" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>'+dots+labs;
+
+  Array.prototype.forEach.call(svg.querySelectorAll(".tp"),function(c){
+    c.addEventListener("click",function(){
+      var i=parseInt(c.getAttribute("data-i"),10);
+      whatChanged(H[i],H[i-1]);
+    });
+  });
+}
+function whatChanged(cur,prev){
+  var box=document.getElementById("changeBox");
+  if(!prev){ box.innerHTML='<div class="empty">First audit — nothing to compare against.</div>'; return; }
+  function T(r){return (r.title||"").trim();}
+  var curT={}, prevT={};
+  cur.recs.forEach(function(r){curT[T(r)]=1;});
+  prev.recs.forEach(function(r){prevT[T(r)]=1;});
+  var resolved=prev.recs.filter(function(r){return !curT[T(r)];});
+  var added=cur.recs.filter(function(r){return !prevT[T(r)];});
+  var d=cur.score-prev.score;
+  function lines(arr,mark){
+    return arr.length?arr.slice(0,5).map(function(r){
+      return '<div style="font-size:12.5px;color:var(--tx2);padding:4px 0">'+mark+" "+esc(r.title)+'</div>';
+    }).join(""):'<div style="font-size:12.5px;color:var(--tx3);padding:4px 0">None</div>';
+  }
+  box.innerHTML='<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line)">'+
+    '<div class="blk" style="margin-bottom:12px"><div class="h">What changed · '+fdate(cur.run_date,1)+'</div>'+
+    '<p style="font-size:15px"><span class="'+(d>0?"up":d<0?"dn":"fl")+'">'+
+    (d>0?"▲ +"+d:d<0?"▼ "+Math.abs(d):"— no change")+'</span> health score vs '+fdate(prev.run_date,1)+'</p></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
+    '<div><div class="h" style="color:'+V("--gr")+'">Resolved · '+resolved.length+'</div>'+lines(resolved,"✓")+'</div>'+
+    '<div><div class="h" style="color:'+V("--or")+'">New · '+added.length+'</div>'+lines(added,"✗")+'</div>'+
+    '</div></div>';
+}
+
+/* ── donut ── */
+function drawDonut(id,legId,data){
+  var svg=document.getElementById(id), leg=document.getElementById(legId);
+  var tot=data.reduce(function(s,d){return s+d.value;},0);
+  if(!tot){ svg.innerHTML=""; leg.innerHTML='<div class="empty" style="padding:0">Nothing open</div>'; return; }
+  var a=0,out="";
+  data.forEach(function(d){
+    if(!d.value) return;
+    var sw=360*d.value/tot, c=V(d.color);
+    out+= sw>=359.9
+      ? '<circle cx="78" cy="78" r="55" fill="none" stroke="'+c+'" stroke-width="21"/>'
+      : '<path d="'+arc(78,78,55,a,a+sw)+'" fill="none" stroke="'+c+'" stroke-width="21"/>';
+    a+=sw;
+  });
+  out+='<text x="78" y="84" text-anchor="middle" fill="'+V("--tx")+
+    '" font-size="27" font-weight="700" font-family="Inter">'+tot+'</text>';
+  svg.innerHTML=out;
+  leg.innerHTML=data.filter(function(d){return d.value;}).map(function(d){
+    return '<div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--tx2)">'+
+      '<i style="width:9px;height:9px;border-radius:2px;background:'+V(d.color)+';flex:none"></i>'+
+      d.label+'<b class="m" style="margin-left:auto;color:var(--tx);font-weight:500">'+d.value+'</b></div>';
+  }).join("");
+}
+
+/* ── keywords ── */
+function kwBadge(k){
+  if(k.avg_position>=4&&k.avg_position<=20&&k.impressions>=5&&k.ctr_pct<8)
+    return '<span class="tag t-op">opportunity</span>';
+  if(k.impressions>=20&&k.ctr_pct<2&&k.avg_position<=20)
+    return '<span class="tag t-ctr">low ctr</span>';
+  if(k.avg_position<=3) return '<span class="tag t-top">top 3</span>';
+  return "";
+}
+function kwFilter(list){
+  var l=list;
+  if(F.kwq) l=l.filter(function(k){return k.name.toLowerCase().indexOf(F.kwq)>-1;});
+  if(F.kw==="opp") l=l.filter(function(k){return k.avg_position>=4&&k.avg_position<=20&&k.impressions>=5;});
+  else if(F.kw==="1-3") l=l.filter(function(k){return k.avg_position<=3;});
+  else if(F.kw==="4-10") l=l.filter(function(k){return k.avg_position>3&&k.avg_position<=10;});
+  else if(F.kw==="11-20") l=l.filter(function(k){return k.avg_position>10&&k.avg_position<=20;});
+  else if(F.kw==="21") l=l.filter(function(k){return k.avg_position>20;});
+  return l;
+}
+function drawKeywords(){
+  var box=document.getElementById("kwBox"), all=METRICS.queries||[];
+  if(!all.length){
+    box.innerHTML=emptyState("Keyword data","which searches bring people to the site",
+      "Add the <code>metrics</code> tab plus <code>Build Metrics Rows</code> in n8n");
+    return;
+  }
+  var l=kwFilter(all);
+  if(!l.length){ box.innerHTML='<div class="empty">No keywords match that filter.</div>'; return; }
+  box.innerHTML='<div class="tw"><table><thead><tr><th>Keyword</th><th>Clicks</th>'+
+    '<th>Impr.</th><th>CTR</th><th>Position</th></tr></thead><tbody>'+
+    l.slice(0,16).map(function(k,i){
+      var pc=k.avg_position<=3?V("--gr"):k.avg_position<=10?V("--cy"):k.avg_position<=20?V("--ye"):V("--tx3");
+      return '<tr class="clk" data-kw="'+i+'"><td title="'+esc(k.name)+'">'+esc(k.name)+kwBadge(k)+'</td>'+
+        '<td>'+num(k.clicks)+'</td><td>'+num(k.impressions)+'</td>'+
+        '<td>'+k.ctr_pct.toFixed(1)+'%</td><td style="color:'+pc+'">'+k.avg_position.toFixed(1)+'</td></tr>';
+    }).join("")+'</tbody></table></div>'+
+    '<div style="font-size:11px;color:var(--tx3);margin-top:12px;line-height:1.7">'+
+    '<span class="tag t-op">opportunity</span> ranks 4–20 with real demand — the cheapest wins available. '+
+    '<span class="tag t-ctr">low ctr</span> seen but not clicked — usually a title or description problem.</div>';
+  Array.prototype.forEach.call(box.querySelectorAll("tr.clk"),function(tr){
+    tr.addEventListener("click",function(){openKeyword(l[parseInt(tr.getAttribute("data-kw"),10)]);});
+  });
+}
+function assessKw(k){
+  if(k.avg_position<=3) return "Ranking in the top three. Protect this position — monitor for content decay and keep the page current.";
+  if(k.avg_position<=20&&k.impressions>=5) return "Striking distance. There is demand and you already rank, so work on the title, meta description and content depth of the ranking page is the highest-return action available.";
+  if(k.impressions>=20&&k.ctr_pct<2) return "People see this result and do not click. That points at the title and meta description rather than the ranking itself.";
+  return "Low visibility so far. Improvement here needs content and authority work rather than quick metadata fixes.";
+}
+function openKeyword(k){
+  var pages=(METRICS.pages||[]).slice(0,3);
+  drawer('<div style="font-size:16px;font-weight:600">'+esc(k.name)+'</div>'+
+    '<div class="m" style="font-size:11px;color:var(--tx3);margin-top:4px">Keyword detail</div>',
+    '<div class="blk"><div class="h">Performance <span class="src s-real">google</span></div>'+
+    '<div class="mini" style="grid-template-columns:repeat(4,1fr)">'+
+    '<div class="minic"><div class="l">Clicks</div><div class="v">'+num(k.clicks)+'</div></div>'+
+    '<div class="minic"><div class="l">Impr.</div><div class="v">'+num(k.impressions)+'</div></div>'+
+    '<div class="minic"><div class="l">CTR</div><div class="v">'+k.ctr_pct.toFixed(1)+'%</div></div>'+
+    '<div class="minic"><div class="l">Position</div><div class="v">'+k.avg_position.toFixed(1)+'</div></div>'+
+    '</div></div><div class="blk"><div class="h">Assessment <span class="src s-calc">calc</span></div>'+
+    '<p>'+assessKw(k)+'</p></div>'+
+    (pages.length?'<div class="blk"><div class="h">Top landing pages</div><div class="urls">'+
+      pages.map(function(p){return '<span class="u">'+esc(path(p.name))+'</span>';}).join("")+'</div></div>':""));
+}
+
+/* ── opportunity ── */
+function drawOpp(){
+  var box=document.getElementById("oppBox"), q=METRICS.queries||[];
+  if(!q.length){ box.innerHTML=emptyState("Opportunity engine","keyword gaps worth chasing",
+    "Needs the <code>metrics</code> tab"); return; }
+  var opp=q.filter(function(k){return k.avg_position>=4&&k.avg_position<=20&&k.impressions>=5;})
+    .sort(function(a,b){return b.impressions-a.impressions;});
+  var lowctr=q.filter(function(k){return k.impressions>=20&&k.ctr_pct<2&&k.avg_position<=20;});
+  if(!opp.length&&!lowctr.length){
+    box.innerHTML='<div class="empty">No striking-distance keywords at current volume. That usually means impressions are still building.</div>';
+    return;
+  }
+  var t=opp[0];
+  box.innerHTML='<div style="font-size:26px;font-weight:700;letter-spacing:-.8px">'+opp.length+'</div>'+
+    '<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">high-value keyword opportunities · '+
+    lowctr.length+' CTR opportunities</div>'+
+    (t?'<div style="background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:13px">'+
+      '<div style="font-size:13px;font-weight:600;margin-bottom:9px">'+esc(t.name)+'</div>'+
+      '<div class="mini" style="grid-template-columns:repeat(3,1fr)">'+
+      '<div class="minic"><div class="l">Impr.</div><div class="v" style="font-size:15px">'+num(t.impressions)+'</div></div>'+
+      '<div class="minic"><div class="l">Position</div><div class="v" style="font-size:15px;color:'+V("--ye")+'">'+t.avg_position.toFixed(1)+'</div></div>'+
+      '<div class="minic"><div class="l">CTR</div><div class="v" style="font-size:15px">'+t.ctr_pct.toFixed(1)+'%</div></div></div>'+
+      '<p style="font-size:12px;color:var(--tx2);margin:11px 0 0;line-height:1.6">Ranking just outside the top results with real demand. Moving it up is usually a title, meta and content-depth exercise on the page that already ranks.</p></div>':"");
+}
+
+/* ── countries ── */
+var CN={USA:"United States",IND:"India",ARE:"United Arab Emirates",SAU:"Saudi Arabia",
+  GBR:"United Kingdom",CAN:"Canada",AUS:"Australia",DEU:"Germany",NLD:"Netherlands",
+  FRA:"France",SGP:"Singapore",PAK:"Pakistan",PHL:"Philippines",BGD:"Bangladesh",
+  ESP:"Spain",ITA:"Italy",BRA:"Brazil",MEX:"Mexico",ZAF:"South Africa",NGA:"Nigeria",
+  KEN:"Kenya",EGY:"Egypt",TUR:"Turkey",CHN:"China",JPN:"Japan",KOR:"South Korea",
+  IDN:"Indonesia",MYS:"Malaysia",THA:"Thailand",VNM:"Vietnam",LKA:"Sri Lanka",
+  NPL:"Nepal",QAT:"Qatar",KWT:"Kuwait",OMN:"Oman",BHR:"Bahrain",ISR:"Israel",POL:"Poland"};
+function drawGeo(){
+  var box=document.getElementById("geoBox"), c=METRICS.countries||[];
+  if(!c.length){ box.innerHTML=emptyState("Country data","which markets search for us",
+    "Add the <code>Search Console: Countries</code> node in n8n"); return; }
+  var max=Math.max.apply(null,c.map(function(x){return x.impressions;}).concat([1]));
+  box.innerHTML='<div class="blist">'+c.slice(0,9).map(function(x,i){
+    return '<div class="brow" data-geo="'+i+'" style="cursor:pointer">'+
+      '<div class="bt"><span>'+esc(CN[x.name]||x.name)+'</span><b>'+num(x.impressions)+'</b></div>'+
+      '<div class="btrack"><div class="bfill" style="width:'+Math.max(3,100*x.impressions/max)+
+      '%;background:linear-gradient(90deg,'+V("--cy")+","+V("--bl")+')"></div></div></div>';
+  }).join("")+'</div>';
+  Array.prototype.forEach.call(box.querySelectorAll("[data-geo]"),function(el){
+    el.addEventListener("click",function(){
+      var x=c[parseInt(el.getAttribute("data-geo"),10)];
+      drawer('<div style="font-size:16px;font-weight:600">'+esc(CN[x.name]||x.name)+'</div>'+
+        '<div class="m" style="font-size:11px;color:var(--tx3);margin-top:4px">Country performance</div>',
+        '<div class="blk"><div class="h">Search Console <span class="src s-real">google</span></div>'+
+        '<div class="mini" style="grid-template-columns:repeat(4,1fr)">'+
+        '<div class="minic"><div class="l">Clicks</div><div class="v">'+num(x.clicks)+'</div></div>'+
+        '<div class="minic"><div class="l">Impr.</div><div class="v">'+num(x.impressions)+'</div></div>'+
+        '<div class="minic"><div class="l">CTR</div><div class="v">'+x.ctr_pct.toFixed(1)+'%</div></div>'+
+        '<div class="minic"><div class="l">Position</div><div class="v">'+x.avg_position.toFixed(1)+'</div></div>'+
+        '</div></div>');
+    });
+  });
+}
+
+/* ── landing pages ── */
+function path(u){
+  try{ var x=new URL(u); return (x.pathname+(x.hash||""))||"/"; }catch(e){ return u; }
+}
+function drawLanding(){
+  var box=document.getElementById("lpBox"), p=METRICS.pages||[];
+  if(!p.length){ box.innerHTML=emptyState("Landing page data","what organic traffic actually lands on",
+    "Add the <code>metrics</code> tab in n8n"); return; }
+  var flag={};
+  ITEMS.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";}).forEach(function(i){
+    (i.affected_urls||[]).forEach(function(u){flag[u]=(flag[u]||0)+1;});
+  });
+  box.innerHTML='<div class="tw"><table><thead><tr><th>Page</th><th>Clicks</th><th>Impr.</th>'+
+    '<th>CTR</th><th>Position</th><th>Issues</th></tr></thead><tbody>'+
+    p.slice(0,14).map(function(pg,i){
+      var pc=pg.avg_position<=3?V("--gr"):pg.avg_position<=20?V("--ye"):V("--tx3");
+      var n=flag[pg.name]||0, pth=path(pg.name);
+      if(pth==="/") pth="/ (home)";
+      return '<tr class="clk" data-lp="'+i+'"><td title="'+esc(pg.name)+'">'+esc(pth)+'</td>'+
+        '<td>'+num(pg.clicks)+'</td><td>'+num(pg.impressions)+'</td>'+
+        '<td>'+pg.ctr_pct.toFixed(1)+'%</td><td style="color:'+pc+'">'+pg.avg_position.toFixed(1)+'</td>'+
+        '<td style="color:'+(n?V("--or"):V("--tx3"))+'">'+(n||"—")+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+  Array.prototype.forEach.call(box.querySelectorAll("[data-lp]"),function(tr){
+    tr.addEventListener("click",function(){openPage(p[parseInt(tr.getAttribute("data-lp"),10)]);});
+  });
+}
+function openPage(pg){
+  var iss=ITEMS.filter(function(i){
+    return (i.affected_urls||[]).indexOf(pg.name)>-1&&i.status!=="Done";});
+  drawer('<div style="font-size:15px;font-weight:600">'+esc(path(pg.name))+'</div>'+
+    '<div class="m" style="font-size:11px;color:var(--tx3);margin-top:4px">'+esc(pg.name)+'</div>',
+    '<div class="blk"><div class="h">Search performance <span class="src s-real">google</span></div>'+
+    '<div class="mini" style="grid-template-columns:repeat(4,1fr)">'+
+    '<div class="minic"><div class="l">Clicks</div><div class="v">'+num(pg.clicks)+'</div></div>'+
+    '<div class="minic"><div class="l">Impr.</div><div class="v">'+num(pg.impressions)+'</div></div>'+
+    '<div class="minic"><div class="l">CTR</div><div class="v">'+pg.ctr_pct.toFixed(1)+'%</div></div>'+
+    '<div class="minic"><div class="l">Position</div><div class="v">'+pg.avg_position.toFixed(1)+'</div></div>'+
+    '</div></div><div class="blk"><div class="h">Open issues on this page · '+iss.length+
+    ' <span class="src s-ai">gemini</span></div>'+
+    (iss.length?iss.map(function(i){
+      return '<div style="padding:9px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;'+
+        'align-items:center;font-size:13px"><span class="pri" style="background:'+V(PRICOL[i.priority])+
+        ';width:34px;flex:none">'+i.priority+'</span>'+esc(i.title)+'</div>';
+    }).join(""):'<p style="color:var(--tx3)">No open issues flagged on this page.</p>')+'</div>');
+}
+
+/* ── category scores ── */
+function drawCatScores(){
+  var box=document.getElementById("catScores");
+  var open=ITEMS.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";});
+  var counts={};
+  Object.keys(WEIGHTS).forEach(function(c){counts[c]=0;});
+  open.forEach(function(i){var c=(i.category||"").toLowerCase();counts[c]=(counts[c]||0)+1;});
+  var cs=categoryScores(ITEMS);
+  box.innerHTML=Object.keys(counts).map(function(c){
+    var s=cs[c]!==undefined?cs[c]:100;
+    var col=s>=80?"--gr":s>=60?"--ye":s>=40?"--or":"--rd";
+    return '<div class="card c3" style="padding:15px"><div class="kl">'+c.replace(/-/g," ")+'</div>'+
+      '<div style="display:flex;align-items:baseline;gap:9px;margin:9px 0">'+
+      '<div style="font-size:26px;font-weight:700;letter-spacing:-1px;color:'+V(col)+'">'+s+'</div>'+
+      '<div style="font-size:11px;color:var(--tx3)">'+(counts[c]||0)+' open</div></div>'+
+      '<div class="btrack"><div class="bfill" style="width:'+s+'%;background:'+V(col)+'"></div></div>'+
+      '<div class="m" style="font-size:10.5px;color:var(--tx3);margin-top:8px">weight '+
+      Math.round((WEIGHTS[c]||0)*100)+'%</div></div>';
+  }).join("");
+}
+
+/* ── action center ── */
+function drawActions(){
+  var box=document.getElementById("actionBox");
+  var top=ITEMS.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";})
+    .sort(function(a,b){
+      return (a.priority||"").localeCompare(b.priority||"")||(b.ice_score-a.ice_score);
+    }).slice(0,3);
+  if(!top.length){
+    box.innerHTML='<div class="card c12"><div class="empty"><b>Nothing outstanding</b>'+
+      'Every recommendation from the latest audit is closed.</div></div>';
+    return;
+  }
+  box.innerHTML=top.map(function(i,n){
+    var c=V(PRICOL[i.priority]||"--tx3");
+    var imp=String(i.expected_impact||"");
+    return '<div class="card c4">'+
+      '<div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap">'+
+      '<span class="m" style="font-size:10px;color:var(--tx3)">#'+(n+1)+'</span>'+
+      '<span class="pri" style="background:'+c+';padding:3px 9px">'+i.priority+'</span>'+
+      '<span class="m" style="font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:'+c+'">'+esc(i.category)+'</span>'+
+      '<span class="m" style="margin-left:auto;font-size:11px;color:'+V("--cy")+'">ICE '+(i.ice_score||0).toFixed(1)+'</span></div>'+
+      '<div style="font-size:14.5px;font-weight:600;letter-spacing:-.2px;margin-bottom:9px">'+esc(i.title)+'</div>'+
+      '<p style="font-size:12.5px;color:var(--tx2);margin:0 0 13px;line-height:1.6">'+
+      esc(imp.slice(0,150))+(imp.length>150?"…":"")+'</p>'+
+      '<div class="m" style="display:flex;gap:14px;font-size:11px;color:var(--tx3);margin-bottom:13px">'+
+      '<span>EFFORT '+esc(String(i.effort||"—").toUpperCase())+'</span>'+
+      '<span>'+(i.affected_urls||[]).length+' PAGE'+((i.affected_urls||[]).length===1?"":"S")+'</span></div>'+
+      '<div style="display:flex;gap:7px;flex-wrap:wrap">'+
+      '<button class="btn pri sm" data-open="'+i._i+'">View detail</button>'+
+      '<button class="btn sm" data-prog="'+i._i+'">Mark in progress</button></div></div>';
+  }).join("");
+  Array.prototype.forEach.call(box.querySelectorAll("[data-open]"),function(b){
+    b.addEventListener("click",function(){openIssue(ITEMS[parseInt(b.getAttribute("data-open"),10)]);});
+  });
+  Array.prototype.forEach.call(box.querySelectorAll("[data-prog]"),function(b){
+    b.addEventListener("click",function(){
+      setStatus(ITEMS[parseInt(b.getAttribute("data-prog"),10)],"In Progress");});
+  });
+}
+
+/* ── metadata optimizer ── */
+function tagType(i){
+  var t=((i.title||"")+" "+(i.recommended_action||"")).toLowerCase();
+  if(t.indexOf("meta description")>-1) return "Meta description";
+  if(t.indexOf("title")>-1) return "Title";
+  if(t.indexOf("h1")>-1) return "H1";
+  if(t.indexOf("canonical")>-1) return "Canonical";
+  if(t.indexOf("alt")>-1) return "Image alt";
+  if(t.indexOf("schema")>-1||t.indexOf("structured")>-1) return "Schema";
+  return "Content";
+}
+function drawMeta(){
+  var box=document.getElementById("metaBox");
+  var w=ITEMS.filter(function(i){
+    return String(i.current_value||"").trim()||String(i.proposed_value||"").trim();});
+  if(!w.length){
+    box.innerHTML=emptyState("Metadata recommendations","the exact tag to replace, and what with",
+      "Add <code>current_value</code> and <code>proposed_value</code> to the sheet, the output schema and the Flatten node — step 5 of n8n-changes.md");
+    return;
+  }
+  box.innerHTML=w.map(function(i){
+    return '<div style="padding:17px 0;border-bottom:1px solid var(--line)">'+
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">'+
+      '<span class="m" style="font-size:11px;color:'+V("--cy")+'">'+esc(tagType(i))+'</span>'+
+      '<span class="m" style="font-size:11px;color:var(--tx3)">'+esc(path((i.affected_urls||[])[0]||"—"))+'</span>'+
+      '<span class="pri" style="background:'+V(PRICOL[i.priority])+';padding:3px 9px;margin-left:auto">'+i.priority+'</span></div>'+
+      '<div class="ba"><div class="bax now"><span class="bal">Currently</span>'+(esc(i.current_value)||"—")+'</div>'+
+      '<div class="arw">&rarr;</div>'+
+      '<div class="bax next"><span class="bal">Change to</span>'+(esc(i.proposed_value)||"—")+'</div></div>'+
+      '<p style="font-size:12.5px;color:var(--tx2);margin:12px 0 0;line-height:1.6">'+
+      '<span class="m" style="font-size:9px;letter-spacing:.12em;color:var(--tx3);text-transform:uppercase">AI reason · </span>'+
+      esc(i.evidence||"")+'</p><div style="display:flex;gap:7px;margin-top:12px">'+
+      '<button class="btn sm" data-copy="'+esc(i.proposed_value)+'">Copy</button>'+
+      '<button class="btn sm" data-open2="'+i._i+'">Detail</button></div></div>';
+  }).join("");
+  Array.prototype.forEach.call(box.querySelectorAll("[data-copy]"),function(b){
+    b.addEventListener("click",function(){
+      if(!navigator.clipboard) return;
+      navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function(){
+        var o=b.textContent; b.textContent="Copied";
+        setTimeout(function(){b.textContent=o;},1400);
+      });
+    });
+  });
+  Array.prototype.forEach.call(box.querySelectorAll("[data-open2]"),function(b){
+    b.addEventListener("click",function(){openIssue(ITEMS[parseInt(b.getAttribute("data-open2"),10)]);});
+  });
+}
+
+/* ── core web vitals ── */
+function drawCwv(){
+  var box=document.getElementById("cwvBox"), p=PERF||{};
+  var M=[
+    {l:"Performance",v:p.performance_score,u:"",good:90,ok:50,lower:false},
+    {l:"LCP",v:p.lcp,u:"s",good:2.5,ok:4,lower:true},
+    {l:"CLS",v:p.cls,u:"",good:.1,ok:.25,lower:true},
+    {l:"INP",v:p.inp,u:"ms",good:200,ok:500,lower:true},
+    {l:"FCP",v:p.fcp,u:"s",good:1.8,ok:3,lower:true},
+    {l:"TTFB",v:p.ttfb,u:"ms",good:800,ok:1800,lower:true}
+  ].filter(function(m){return m.v!==undefined&&m.v!==null&&m.v!=="";});
+  if(!M.length){
+    box.innerHTML='<div class="card">'+emptyState("PageSpeed metrics",
+      "LCP, CLS, INP and the performance score",
+      "The workflow already fetches these but discards them. Write them to the <code>metrics</code> tab with type <code>perf</code>")+'</div>';
+    return;
+  }
+  box.innerHTML='<div class="g">'+M.map(function(m){
+    var v=Number(m.v);
+    var st=m.lower?(v<=m.good?"--gr":v<=m.ok?"--ye":"--rd"):(v>=m.good?"--gr":v>=m.ok?"--ye":"--rd");
+    var lbl=st==="--gr"?"Good":st==="--ye"?"Needs improvement":"Poor";
+    return '<div class="card c2" style="padding:15px"><div class="kl">'+m.l+'</div>'+
+      '<div style="font-size:24px;font-weight:700;margin:9px 0 5px;color:'+V(st)+'">'+m.v+m.u+'</div>'+
+      '<div style="font-size:11px;color:'+V(st)+'">'+lbl+'</div></div>';
+  }).join("")+'</div>';
+}
+
+
+/* ── daily search performance ── */
+function dailySlice(){
+  var d=(METRICS.daily||[]).slice();
+  if(!d.length) return d;
+  var n=parseInt(F.dr,10);
+  return d.slice(-n);
+}
+function drawPerf(){
+  var box=document.getElementById("perfBox"), sum=document.getElementById("perfSummary");
+  var d=dailySlice();
+  if(!d.length){
+    sum.innerHTML="";
+    box.innerHTML=emptyState("Daily search data","clicks and impressions day by day",
+      "Add the <code>Search Console: Daily</code>, <code>Build Daily Rows</code> and <code>Append Daily</code> nodes — see n8n-daily-data.md");
+    return;
+  }
+  var clicks=0,imps=0,posw=0;
+  d.forEach(function(x){clicks+=x.clicks;imps+=x.impressions;posw+=x.avg_position*x.impressions;});
+  var ctr=imps?100*clicks/imps:0, pos=imps?posw/imps:0;
+  var label={1:"last 24 hours",7:"last 7 days",28:"last 28 days",90:"last 3 months",180:"last 6 months"}[F.dr]||"period";
+  sum.innerHTML=[["Clicks",num(clicks),""],["Impressions",num(imps),""],
+    ["CTR",ctr.toFixed(2)+"%",""],["Avg position",pos.toFixed(1),""]]
+    .map(function(c){
+      return '<div class="c3" style="padding:2px 0 10px"><div class="kl">'+c[0]+'</div>'+
+        '<div style="font-size:24px;font-weight:700;letter-spacing:-1px;margin:7px 0 3px">'+c[1]+'</div>'+
+        '<div style="font-size:11px;color:var(--tx3)">'+label+'</div></div>';
+    }).join("");
+
+  var W=1000,H=250,pl=48,pr=52,pt=18,pb=34;
+  function X(i){return pl+(d.length===1?(W-pl-pr)/2:i*(W-pl-pr)/(d.length-1));}
+  function series(key,max,col,axisRight){
+    var Y=function(v){return pt+(1-(v/(max||1)))*(H-pt-pb);};
+    var pts=d.map(function(x,i){return X(i).toFixed(1)+","+Y(x[key]).toFixed(1);}).join(" ");
+    return {pts:pts,Y:Y,col:col};
+  }
+  var out="",legend=[];
+  var showC=F.dm==="both"||F.dm==="clicks";
+  var showI=F.dm==="both"||F.dm==="impressions";
+  var single=(F.dm==="ctr_pct"||F.dm==="avg_position");
+
+  // gridlines
+  for(var gi=0;gi<=3;gi++){
+    var y=pt+gi*(H-pt-pb)/3;
+    out+='<line x1="'+pl+'" y1="'+y.toFixed(1)+'" x2="'+(W-pr)+'" y2="'+y.toFixed(1)+'" stroke="'+V("--line")+'"/>';
+  }
+
+  if(single){
+    var key=F.dm;
+    var mx=Math.max.apply(null,d.map(function(x){return x[key];}).concat([1]));
+    var inv=key==="avg_position";
+    var s1=series(key,mx,V("--cy"));
+    out+='<polyline points="'+s1.pts+'" fill="none" stroke="'+V("--cy")+'" stroke-width="2.4" stroke-linejoin="round"/>';
+    for(var g2=0;g2<=3;g2++){
+      var yy=pt+g2*(H-pt-pb)/3, vv=mx*(1-g2/3);
+      out+='<text x="14" y="'+(yy+4).toFixed(1)+'" fill="'+V("--tx3")+'" font-size="10" font-family="JetBrains Mono">'+
+        (key==="ctr_pct"?vv.toFixed(1)+"%":vv.toFixed(1))+'</text>';
+    }
+    legend.push(["--cy",key==="ctr_pct"?"CTR":"Average position"]);
+  }else{
+    var mxC=Math.max.apply(null,d.map(function(x){return x.clicks;}).concat([1]));
+    var mxI=Math.max.apply(null,d.map(function(x){return x.impressions;}).concat([1]));
+    if(showI){
+      var sI=series("impressions",mxI,V("--pu"));
+      out+='<polygon points="'+pl+","+(H-pb)+" "+sI.pts+" "+(W-pr)+","+(H-pb)+
+        '" fill="'+V("--pu")+'" opacity=".10"/>';
+      out+='<polyline points="'+sI.pts+'" fill="none" stroke="'+V("--pu")+'" stroke-width="2.2" stroke-linejoin="round"/>';
+      for(var g3=0;g3<=3;g3++){
+        var y3=pt+g3*(H-pt-pb)/3;
+        out+='<text x="'+(W-pr+8)+'" y="'+(y3+4).toFixed(1)+'" fill="'+V("--pu")+
+          '" font-size="10" font-family="JetBrains Mono">'+Math.round(mxI*(1-g3/3))+'</text>';
+      }
+      legend.push(["--pu","Impressions"]);
+    }
+    if(showC){
+      var sC=series("clicks",mxC,V("--cy"));
+      out+='<polyline points="'+sC.pts+'" fill="none" stroke="'+V("--cy")+'" stroke-width="2.4" stroke-linejoin="round"/>';
+      for(var g4=0;g4<=3;g4++){
+        var y4=pt+g4*(H-pt-pb)/3;
+        out+='<text x="14" y="'+(y4+4).toFixed(1)+'" fill="'+V("--cy")+
+          '" font-size="10" font-family="JetBrains Mono">'+Math.round(mxC*(1-g4/3))+'</text>';
+      }
+      legend.push(["--cy","Clicks"]);
+    }
+  }
+
+  var every=Math.max(1,Math.ceil(d.length/8));
+  d.forEach(function(x,i){
+    if(i%every===0||i===d.length-1)
+      out+='<text x="'+X(i).toFixed(1)+'" y="'+(H-10)+'" fill="'+V("--tx3")+
+        '" font-size="9.5" font-family="JetBrains Mono" text-anchor="middle">'+fdate(x.name)+'</text>';
+  });
+
+  box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="'+H+
+    '" role="img" aria-label="Search performance over time">'+out+'</svg>'+
+    '<div style="display:flex;gap:16px;margin-top:10px;font-size:11.5px;color:var(--tx3)">'+
+    legend.map(function(l){
+      return '<span style="display:inline-flex;align-items:center;gap:6px">'+
+        '<i style="width:14px;height:2.5px;background:'+V(l[0])+';display:inline-block"></i>'+l[1]+'</span>';
+    }).join("")+'</div>';
+}
+
+/* ── world bubble map ── */
+var CENTROIDS={USA:[-98,39],IND:[79,22],ARE:[54,24],SAU:[45,24],GBR:[-2,54],CAN:[-106,56],
+  AUS:[134,-25],DEU:[10,51],NLD:[5.3,52],FRA:[2,46],SGP:[104,1.3],PAK:[69,30],
+  PHL:[122,12],BGD:[90,24],ESP:[-4,40],ITA:[12,42],BRA:[-51,-14],MEX:[-102,23],
+  ZAF:[24,-30],NGA:[8,9],KEN:[38,0],EGY:[30,26],TUR:[35,39],CHN:[104,35],
+  JPN:[138,36],KOR:[128,36],IDN:[113,-1],MYS:[102,4],THA:[101,15],VNM:[108,14],
+  LKA:[81,7],NPL:[84,28],QAT:[51,25],KWT:[47,29],OMN:[56,21],BHR:[50.6,26],
+  ISR:[35,31],POL:[19,52],SWE:[18,60],NOR:[8,60],DNK:[10,56],FIN:[26,64],
+  CHE:[8,47],AUT:[14,47],BEL:[4.5,50.5],IRL:[-8,53],PRT:[-8,39],GRC:[22,39],
+  RUS:[105,61],UKR:[31,49],ARG:[-64,-38],CHL:[-71,-35],COL:[-74,4],PER:[-75,-9],
+  NZL:[174,-41],HKG:[114,22],TWN:[121,24],ROU:[25,46],CZE:[15,50],HUN:[19,47]};
+
+function drawMap(){
+  var el=document.getElementById("mapBox");
+  var c=METRICS.countries||[];
+  if(!c.length){ el.innerHTML=""; return; }
+  if(typeof d3==="undefined"||typeof topojson==="undefined"){ el.innerHTML=""; return; }
+
+  var W=400,H=200;
+  el.innerHTML='<svg id="wmap" viewBox="0 0 '+W+' '+H+'" width="100%" style="display:block"></svg>';
+  var svg=d3.select("#wmap");
+  var proj=d3.geoNaturalEarth1().scale(72).translate([W/2,H/2+8]);
+  var pathGen=d3.geoPath(proj);
+
+  d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(function(world){
+    var land=topojson.feature(world,world.objects.countries);
+    svg.append("g").selectAll("path").data(land.features).enter().append("path")
+      .attr("d",pathGen).attr("fill",V("--surf3")).attr("stroke",V("--line")).attr("stroke-width",.4);
+
+    var max=d3.max(c,function(x){return x.impressions;})||1;
+    var r=d3.scaleSqrt().domain([0,max]).range([2,15]);
+    var pts=c.filter(function(x){return CENTROIDS[x.name];});
+    svg.append("g").selectAll("circle").data(pts).enter().append("circle")
+      .attr("cx",function(x){return proj(CENTROIDS[x.name])[0];})
+      .attr("cy",function(x){return proj(CENTROIDS[x.name])[1];})
+      .attr("r",function(x){return r(x.impressions);})
+      .attr("fill",V("--cy")).attr("fill-opacity",.4)
+      .attr("stroke",V("--cy")).attr("stroke-width",1.2)
+      .style("cursor","pointer")
+      .append("title").text(function(x){
+        return (CN[x.name]||x.name)+" — "+num(x.impressions)+" impressions, "+num(x.clicks)+" clicks";
+      });
+  }).catch(function(){ el.innerHTML=""; });
+}
+
+/* ── issues ── */
+function iceCells(s){
+  var on=Math.round(s||0),c="";
+  for(var i=1;i<=10;i++) c+='<div class="cel '+(i<=on?"on":"")+'"></div>';
+  return c;
+}
+function filtered(){
+  return ITEMS.filter(function(i){
+    if(F.pri!=="all"&&i.priority!==F.pri) return false;
+    if(F.st==="active"&&(i.status==="Done"||i.status==="Ignored")) return false;
+    if(F.isq){
+      var hay=((i.title||"")+" "+(i.category||"")+" "+(i.evidence||"")).toLowerCase();
+      if(hay.indexOf(F.isq)===-1) return false;
+    }
+    return true;
+  }).sort(function(a,b){
+    return (a.priority||"").localeCompare(b.priority||"")||(b.ice_score-a.ice_score);
+  });
+}
+function drawIssues(){
+  var list=filtered(), box=document.getElementById("issueList");
+  var open=ITEMS.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";}).length;
+  document.getElementById("issueCount").textContent =
+    list.length+" shown · "+open+" open · "+ITEMS.length+" total in this audit";
+  if(!list.length){
+    box.innerHTML='<div class="card"><div class="empty">No issues match those filters.</div></div>';
+    return;
+  }
+  box.innerHTML=list.map(function(i){
+    var c=V(PRICOL[i.priority]||"--tx3");
+    var sc=i.status==="Done"?"done":i.status==="In Progress"?"prog":i.status==="Ignored"?"ign":"";
+    var np=(i.affected_urls||[]).length;
+    return '<article class="irow '+(i.status==="Done"?"done":"")+'">'+
+      '<div class="ih" tabindex="0" role="button" data-issue="'+i._i+'">'+
+      '<div class="pri" style="background:'+c+'">'+i.priority+'</div>'+
+      '<div><div class="it">'+esc(i.title)+'</div><div class="im">'+
+      '<span class="cat" style="color:'+c+'">'+esc(i.category)+'</span>'+
+      '<span>'+esc(i.effort||"—")+' effort</span>'+
+      '<span>'+np+' page'+(np===1?"":"s")+'</span></div></div>'+
+      '<div class="ir ir2"><div class="ice"><div class="icec">'+iceCells(i.ice_score)+'</div>'+
+      '<div class="icel">ICE '+(i.ice_score||0).toFixed(1)+'</div></div>'+
+      '<button class="stbtn '+sc+'" data-st="'+i._i+'">'+esc(i.status)+'</button></div></div></article>';
+  }).join("");
+  Array.prototype.forEach.call(box.querySelectorAll("[data-issue]"),function(el){
+    el.addEventListener("click",function(e){
+      if(e.target.closest("[data-st]")) return;
+      openIssue(ITEMS[parseInt(el.getAttribute("data-issue"),10)]);
+    });
+    el.addEventListener("keydown",function(e){
+      if(e.key==="Enter"||e.key===" "){
+        e.preventDefault(); openIssue(ITEMS[parseInt(el.getAttribute("data-issue"),10)]);
+      }
+    });
+  });
+  Array.prototype.forEach.call(box.querySelectorAll("[data-st]"),function(b){
+    b.addEventListener("click",function(e){
+      e.stopPropagation();
+      var it=ITEMS[parseInt(b.getAttribute("data-st"),10)];
+      var nx={Open:"In Progress","In Progress":"Done",Done:"Ignored",Ignored:"Open"}[it.status]||"Open";
+      setStatus(it,nx);
+    });
+  });
+}
+function setStatus(it,next){
+  it.status=next;
+  drawIssues(); drawActions(); drawCatScores(); drawKpis();
+  drawGauge(healthFrom(ITEMS));
+  if(it._row){
+    fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({row:it._row,status:next})}).catch(function(){});
+  }
+}
+function openIssue(i){
+  var c=V(PRICOL[i.priority]||"--tx3");
+  var hasBa=String(i.current_value||"").trim()||String(i.proposed_value||"").trim();
+  var ba=hasBa?'<div class="blk"><div class="h">Change to make <span class="src s-ai">gemini</span></div>'+
+    '<div class="ba"><div class="bax now"><span class="bal">Currently</span>'+(esc(i.current_value)||"—")+'</div>'+
+    '<div class="arw">&rarr;</div><div class="bax next"><span class="bal">Change to</span>'+
+    (esc(i.proposed_value)||"—")+'</div></div></div>':"";
+  var conf=i.ice_score>=7?"High":i.ice_score>=5?"Medium":"Low";
+  var confCol=conf==="High"?V("--gr"):conf==="Medium"?V("--ye"):V("--tx3");
+  drawer('<div><span class="pri" style="background:'+c+';padding:3px 10px;display:inline-block;margin-bottom:8px">'+
+    i.priority+'</span><div style="font-size:16px;font-weight:600;letter-spacing:-.2px">'+esc(i.title)+'</div>'+
+    '<div class="m" style="font-size:11px;color:var(--tx3);margin-top:5px">'+esc(i.category)+' · '+
+    esc(i.effort)+' effort · ICE '+(i.ice_score||0).toFixed(1)+'</div></div>',
+    '<div class="blk"><div class="h">Evidence <span class="src s-real">google</span></div>'+
+    '<p class="ev">'+(esc(i.evidence)||"—")+'</p></div>'+ba+
+    '<div class="blk"><div class="h">Recommended action <span class="src s-ai">gemini</span></div>'+
+    '<p>'+(esc(i.recommended_action)||"—")+'</p></div>'+
+    '<div class="blk"><div class="h">Expected impact</div><p>'+(esc(i.expected_impact)||"—")+'</p>'+
+    '<p style="font-size:11.5px;color:var(--tx3);margin-top:8px">Stated as potential improvement — no ranking outcome is guaranteed.</p></div>'+
+    '<div class="blk"><div class="h">AI confidence</div><p><b style="color:'+confCol+'">'+conf+
+    '</b> — derived from the ICE score, which combines how sure the model is with how much supporting evidence the audit found.</p></div>'+
+    '<div class="blk"><div class="h">Affected pages · '+(i.affected_urls||[]).length+'</div>'+
+    '<div class="urls">'+((i.affected_urls||[]).map(function(u){
+      return '<span class="u">'+esc(u)+'</span>';}).join("")||"—")+'</div></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+    '<button class="btn pri" data-set="In Progress">Mark in progress</button>'+
+    '<button class="btn" data-set="Done">Mark done</button>'+
+    '<button class="btn" data-set="Ignored">Ignore</button></div>');
+  Array.prototype.forEach.call(document.querySelectorAll("#drBody [data-set]"),function(b){
+    b.addEventListener("click",function(){
+      setStatus(i,b.getAttribute("data-set")); closeDrawer();
+    });
+  });
+}
+
+/* ── drawer ── */
+function drawer(title,body){
+  document.getElementById("drTitle").innerHTML=title;
+  document.getElementById("drBody").innerHTML=body;
+  document.getElementById("dr").classList.add("on");
+  document.getElementById("ov").classList.add("on");
+  document.getElementById("drClose").focus();
+}
+function closeDrawer(){
+  document.getElementById("dr").classList.remove("on");
+  document.getElementById("ov").classList.remove("on");
+}
+document.getElementById("ov").addEventListener("click",closeDrawer);
+document.getElementById("drClose").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeDrawer(); });
+
+/* ── export ── */
+document.getElementById("exportBtn").addEventListener("click",function(){
+  var cols=["priority","ice_score","category","title","evidence","recommended_action",
+    "expected_impact","effort","affected_urls","status"];
+  function q(s){return '"'+String(s==null?"":s).replace(/"/g,'""')+'"';}
+  var csv=[cols.join(",")].concat(filtered().map(function(i){
+    return cols.map(function(c){
+      return q(Array.isArray(i[c])?i[c].join(" | "):i[c]);
+    }).join(",");
+  })).join("\n");
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="seo-issues-"+new Date().toISOString().slice(0,10)+".csv";
+  a.click();
+});
+
+/* ── filters ── */
+function segWire(id,key,after){
+  Array.prototype.forEach.call(document.querySelectorAll("#"+id+" button"),function(b){
+    b.addEventListener("click",function(){
+      Array.prototype.forEach.call(document.querySelectorAll("#"+id+" button"),function(x){
+        x.setAttribute("aria-pressed","false");});
+      b.setAttribute("aria-pressed","true");
+      F[key]=b.getAttribute("data-p")||b.getAttribute("data-s")||
+             b.getAttribute("data-k")||b.getAttribute("data-r");
+      after();
+    });
+  });
+}
+segWire("priSeg","pri",drawIssues);
+segWire("stSeg","st",drawIssues);
+segWire("kwSeg","kw",drawKeywords);
+segWire("rangeSeg","range",drawTrend);
+segWire("dMetric","dm",drawPerf);
+
+function syncRange(val){
+  F.dr=val;
+  ["rangeA","rangeB"].forEach(function(id){
+    Array.prototype.forEach.call(document.querySelectorAll("#"+id+" button"),function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-d")===val ? "true":"false");
+    });
+  });
+  drawKpis(); drawPerf();
+}
+["rangeA","rangeB"].forEach(function(id){
+  Array.prototype.forEach.call(document.querySelectorAll("#"+id+" button"),function(b){
+    b.addEventListener("click",function(){ syncRange(b.getAttribute("data-d")); });
+  });
+});
+
+function showView(v){
+  Array.prototype.forEach.call(document.querySelectorAll("[data-view]"),function(el){
+    el.classList.toggle("show", el.getAttribute("data-view")===v);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".navi"),function(b){
+    if(b.getAttribute("data-go")===v) b.setAttribute("aria-current","page");
+    else b.removeAttribute("aria-current");
+  });
+  document.getElementById("nav").classList.remove("open");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+Array.prototype.forEach.call(document.querySelectorAll(".navi"),function(b){
+  b.addEventListener("click",function(){ showView(b.getAttribute("data-go")); });
+});
+document.getElementById("navToggle").addEventListener("click",function(){
+  document.getElementById("nav").classList.toggle("open");
+});
+document.getElementById("kwSearch").addEventListener("input",function(e){
+  F.kwq=e.target.value.trim().toLowerCase(); drawKeywords();});
+document.getElementById("isSearch").addEventListener("input",function(e){
+  F.isq=e.target.value.trim().toLowerCase(); drawIssues();});
+
+/* ── load ── */
+function load(){
+  var btn=document.getElementById("refresh");
+  btn.firstElementChild.classList.add("spin");
+  fetch(ENDPOINT,{cache:"no-store"}).then(function(r){return r.json();}).then(function(data){
+    btn.firstElementChild.classList.remove("spin");
+    if(data.error){
+      document.getElementById("issueList").innerHTML='<div class="card"><div class="empty">'+
+        '<b style="color:'+V("--rd")+'">Endpoint error</b>'+esc(data.error)+'</div></div>';
+      return;
+    }
+    RECS=data.recommendations||[];
+    METRICS=data.metrics||{};
+    PERF=data.performance||METRICS.performance||{};
+
+    var byDate={};
+    RECS.forEach(function(r){ (byDate[r.run_date]=byDate[r.run_date]||[]).push(r); });
+    HISTORY=Object.keys(byDate).sort().map(function(d){
+      return {run_date:d,recs:byDate[d],score:healthFrom(byDate[d])};
+    });
+
+    var cur=HISTORY[HISTORY.length-1];
+    if(!cur){
+      document.getElementById("issueList").innerHTML='<div class="card"><div class="empty">'+
+        '<b>No audits in the sheet yet</b>Run the n8n workflow once, then refresh.</div></div>';
+      return;
+    }
+    ITEMS=cur.recs.map(function(r,i){
+      var o={}; for(var k in r) o[k]=r[k]; o._i=i; return o;
+    });
+
+    document.getElementById("lastRun").textContent=fdate(cur.run_date,true);
+    document.getElementById("syncTime").textContent=fdate(cur.run_date,true)+" 06:00 IST";
+
+    var score=healthFrom(ITEMS);
+    drawGauge(score);
+    var prev=HISTORY[HISTORY.length-2];
+    document.getElementById("gdelta").innerHTML = prev
+      ? (score-prev.score===0?"unchanged since last audit"
+        :'<span class="'+(score>prev.score?"up":"dn")+'">'+(score>prev.score?"▲ +":"▼ ")+
+          Math.abs(score-prev.score)+'</span> vs previous audit')
+      : "first audit — no comparison yet";
+
+    var open=ITEMS.filter(function(i){return i.status!=="Done"&&i.status!=="Ignored";});
+    drawDonut("priDonut","priLeg",["P0","P1","P2","P3"].map(function(p){
+      return {label:p,color:PRICOL[p],
+        value:open.filter(function(i){return i.priority===p;}).length};
+    }));
+
+    drawKpis(); drawTrend(); drawPerf(); drawKeywords(); drawOpp();
+    drawGeo(); drawMap(); drawLanding();
+    drawCatScores(); drawActions(); drawMeta(); drawCwv(); drawIssues();
+    document.getElementById("nKw").textContent=(METRICS.queries||[]).length||"—";
+    document.getElementById("nIss").textContent=open.length;
+    document.getElementById("nAct").textContent=Math.min(3,open.length);
+  }).catch(function(){
+    btn.firstElementChild.classList.remove("spin");
+    document.getElementById("issueList").innerHTML='<div class="card"><div class="empty">'+
+      '<b style="color:'+V("--rd")+'">Could not reach the data endpoint</b>'+
+      'Check the Apps Script deployment is set to "Anyone" and the URL ends in <code>/exec</code>.</div></div>';
+  });
+}
+document.getElementById("refresh").addEventListener("click",load);
+load();
+</script>
+</body>
+</html>
